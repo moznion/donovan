@@ -1,12 +1,31 @@
 donovan
-=============
+=======
 
-TBD
+Deadly simple web application framework for mocking and testing.
+
+This is inspired by [avans](https://github.com/tokuhirom/avans).
+
+:skull:__THIS PROJECT IS UNDER DEVELOPMENT__:skull:
 
 Synopsis
 ---
 
-TBD
+```java
+try (DonovanJetty dj = new DonovanJetty()) {
+    dj.get("/", (c) -> {
+        return c.renderJSON(new BasicAPIResponse(200, "hello!"));
+    });
+
+    dj.start();
+
+    String url = dj.getUrl();
+    Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+    Mech2Result result = mech.get("/").execute();
+
+    System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
+    System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+}
+```
 
 Description
 --
