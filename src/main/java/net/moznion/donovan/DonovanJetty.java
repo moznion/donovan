@@ -2,8 +2,6 @@ package net.moznion.donovan;
 
 import lombok.Getter;
 
-import me.geso.webscrew.response.WebResponse;
-
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -15,26 +13,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DonovanJetty implements Servable {
-  @Getter
+@Getter
+public class DonovanJetty extends DonovanServlet {
   private String url;
-  @Getter
   private Server jetty;
 
-  private final Dispatcher dispatcher;
-
   public DonovanJetty() {
-    dispatcher = new Dispatcher();
-  }
-
-  @Override
-  public void get(String path, ThrowableFunction<Controller, WebResponse> action) {
-    dispatcher.getRouter().get(path, action);
-  }
-
-  @Override
-  public void post(String path, ThrowableFunction<Controller, WebResponse> action) {
-    dispatcher.getRouter().post(path, action);
+    super();
   }
 
   @Override
@@ -53,11 +38,6 @@ public class DonovanJetty implements Servable {
   @Override
   public void stop() throws Exception {
     jetty.stop();
-  }
-
-  @Override
-  public void close() throws Exception {
-    stop();
   }
 
   private class DonovanJettyHandler extends AbstractHandler {
