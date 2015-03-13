@@ -67,17 +67,29 @@ public class DonovanJettyTest {
       Mech2Result result = mech.get("/foo").execute();
 
       assertEquals(404, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals(
+          "<!doctype html><html><div style='font-size: 400%'>404 Not Found</div></html>",
+          result.getResponseBodyAsString());
     }
   }
 
-  /*
-   * @Test public void shouldBeMethodNotAllowed() throws Exception { try (DonovanJetty dj = new
-   * DonovanJetty()) { dj.get("/", (c) -> { return c.renderJSON(new BasicAPIResponse()); });
-   * dj.start();
-   * 
-   * String url = dj.getUrl(); Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new
-   * URI(url)); Mech2Result result = mech.post("/").execute(); assertEquals(405,
-   * result.getResponse().getStatusLine().getStatusCode()); } }
-   */
+  @Test
+  public void shouldBeMethodNotAllowed() throws Exception {
+    try (DonovanJetty dj = new
+        DonovanJetty()) {
+      dj.get("/", (c) -> {
+        return c.renderJSON(new BasicAPIResponse());
+      });
+      dj.start();
 
+      String url = dj.getUrl();
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new
+          URI(url));
+      Mech2Result result = mech.post("/").execute();
+      assertEquals(405, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals(
+          "<!doctype html><html><div style='font-size: 400%'>405 Method Not Allowed</div></html>",
+          result.getResponseBodyAsString());
+    }
+  }
 }

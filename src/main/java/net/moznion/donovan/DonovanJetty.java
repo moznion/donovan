@@ -46,6 +46,7 @@ public class DonovanJetty extends DonovanServlet {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest servletRequest,
         HttpServletResponse servletResponse) throws IOException, ServletException {
+      baseRequest.setHandled(true);
       dispatcher.dispatch(servletRequest, servletResponse);
     }
   }
