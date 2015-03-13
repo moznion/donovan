@@ -75,8 +75,7 @@ public class DonovanJettyTest {
 
   @Test
   public void shouldBeMethodNotAllowed() throws Exception {
-    try (DonovanJetty dj = new
-        DonovanJetty()) {
+    try (DonovanJetty dj = new DonovanJetty()) {
       dj.get("/", (c) -> {
         return c.renderJSON(new BasicAPIResponse());
       });

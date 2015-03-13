@@ -1,8 +1,12 @@
 package net.moznion.donovan;
 
+import lombok.Getter;
+
 import me.geso.webscrew.response.WebResponse;
 
 abstract class DonovanServlet implements AutoCloseable {
+  @Getter
+  protected String url;
   protected final Dispatcher dispatcher;
 
   public DonovanServlet() {

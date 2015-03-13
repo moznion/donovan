@@ -13,9 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Getter
 public class DonovanJetty extends DonovanServlet {
-  private String url;
+  @Getter
   private Server jetty;
 
   public DonovanJetty() {
@@ -41,7 +40,9 @@ public class DonovanJetty extends DonovanServlet {
   }
 
   private class DonovanJettyHandler extends AbstractHandler {
-    public DonovanJettyHandler() {}
+    public DonovanJettyHandler() {
+      super();
+    }
 
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest servletRequest,
