@@ -1,7 +1,7 @@
-donovan
-=======
+donovan [![Build Status](https://travis-ci.org/moznion/donovan.svg)](https://travis-ci.org/moznion/donovan)
+==
 
-Deadly simple web application framework for mocking and testing.
+Deadly simple Java 8 web application framework for mocking and testing.
 
 This is inspired by [avans](https://github.com/tokuhirom/avans).
 
