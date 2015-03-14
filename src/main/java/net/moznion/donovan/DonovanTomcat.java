@@ -37,8 +37,12 @@ public class DonovanTomcat extends DonovanServletContainer {
 
   @Override
   public void stop() throws Exception {
-    this.tomcat.stop();
-    this.tomcat.destroy();
+    tomcat.stop();
+    tomcat.destroy();
+  }
+
+  public void await() {
+    tomcat.getServer().await();
   }
 
   private class DonovanTomcatHandler extends HttpServlet {

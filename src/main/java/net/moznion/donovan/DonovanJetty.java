@@ -39,6 +39,10 @@ public class DonovanJetty extends DonovanServletContainer {
     jetty.stop();
   }
 
+  public void join() throws InterruptedException {
+    jetty.join();
+  }
+
   private class DonovanJettyHandler extends AbstractHandler {
     public DonovanJettyHandler() {
       super();
