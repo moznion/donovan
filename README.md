@@ -5,10 +5,10 @@ Deadly simple Java 8 web application framework for mocking and testing.
 
 This is inspired by [avans](https://github.com/tokuhirom/avans).
 
-:skull:__THIS PROJECT IS UNDER DEVELOPMENT__:skull:
-
 Synopsis
 ---
+
+### With Embedded Jetty
 
 ```java
 try (DonovanJetty dj = new DonovanJetty()) {
@@ -19,6 +19,25 @@ try (DonovanJetty dj = new DonovanJetty()) {
     dj.start();
 
     String url = dj.getUrl();
+    Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+    Mech2Result result = mech.get("/").execute();
+
+    System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
+    System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+}
+```
+
+### With Embedded Tomcat
+
+```java
+try (DonovanTomcat dt = new DonovanTomcat()) {
+    dt.get("/", (c) -> {
+        return c.renderJSON(new BasicAPIResponse());
+    });
+
+    dt.start();
+
+    String url = dt.getUrl();
     Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
     Mech2Result result = mech.get("/").execute();
 
