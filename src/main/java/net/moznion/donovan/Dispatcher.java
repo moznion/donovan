@@ -21,7 +21,8 @@ public class Dispatcher implements ErrorPageWriter {
     router = new WebRouter<>();
   }
 
-  public void dispatch(final HttpServletRequest servletRequest,
+  public void dispatch(
+      final HttpServletRequest servletRequest,
       final HttpServletResponse servletResponse,
       final Optional<Consumer<WebResponse>> maybeResponseFilter,
       final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger) {
@@ -42,9 +43,11 @@ public class Dispatcher implements ErrorPageWriter {
 
     final Map<String, String> captured = match.getCaptured();
     final ThrowableFunction<Controller, WebResponse> action = match.getDestination();
-    Controller controller =
-        new Controller(servletRequest, servletResponse, captured, maybeResponseFilter,
-            maybeBeforeDispatchTrigger);
+    Controller controller = Controller.makeControllerBuilder(servletRequest, servletResponse)
+        .captured(captured)
+        .maybeResponseFilter(maybeResponseFilter)
+        .maybeBeforeDispatchTrigger(maybeBeforeDispatchTrigger)
+        .build();
     controller.invoke(action);
   }
 }

@@ -1,6 +1,8 @@
 package net.moznion.donovan;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import me.geso.webscrew.response.WebResponse;
 
@@ -15,28 +17,53 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
   @Getter
-  private HttpServletRequest servletRequest;
+  private final HttpServletRequest servletRequest;
   @Getter
-  private Map<String, String> pathParams;
+  private final Map<String, String> pathParams;
   @Getter
-  private HttpServletResponse servletResponse;
+  private final HttpServletResponse servletResponse;
 
-  private Optional<Consumer<WebResponse>> maybeResponseFilter;
-  private Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger;
+  private final Optional<Consumer<WebResponse>> maybeResponseFilter;
+  private final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger;
 
-  public Controller(
-      final HttpServletRequest servletRequest,
-      final HttpServletResponse servletResponse,
-      final Map<String, String> captured,
-      final Optional<Consumer<WebResponse>> maybeResponseFilter,
-      final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger) {
-    this.servletRequest = servletRequest;
-    this.servletResponse = servletResponse;
+  @Getter
+  @Accessors(fluent = true)
+  public static class ControllerBuilder {
+    private final HttpServletRequest servletRequest;
+    private final HttpServletResponse servletResponse;
+    @Setter
+    private Map<String, String> captured;
+    @Setter
+    private Optional<Consumer<WebResponse>> maybeResponseFilter;
+    @Setter
+    private Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger;
+
+    public ControllerBuilder(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+      this.servletRequest = servletRequest;
+      this.servletResponse = servletResponse;
+      this.captured = Collections.<String, String>emptyMap();
+      this.maybeResponseFilter = Optional.empty();
+      this.maybeBeforeDispatchTrigger = Optional.empty();
+    }
+
+    public Controller build() {
+      return new Controller(this);
+    }
+  }
+
+  public static ControllerBuilder makeControllerBuilder(HttpServletRequest servletRequest,
+      HttpServletResponse servletResponse) {
+    return new ControllerBuilder(servletRequest, servletResponse);
+  }
+
+  private Controller(ControllerBuilder cb) {
+    this.servletRequest = cb.servletRequest;
+    this.servletResponse = cb.servletResponse;
     this.setDefaultCharacterEncoding();
 
-    this.pathParams = Collections.unmodifiableMap(captured);
-    this.maybeResponseFilter = maybeResponseFilter;
-    this.maybeBeforeDispatchTrigger = maybeBeforeDispatchTrigger;
+    this.pathParams = Collections.unmodifiableMap(cb.captured);
+    this.maybeResponseFilter = cb.maybeResponseFilter;
+    this.maybeBeforeDispatchTrigger = cb.maybeBeforeDispatchTrigger;
   }
 
   private void setDefaultCharacterEncoding() {
