@@ -7,6 +7,8 @@ import me.geso.webscrew.response.WebResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,14 +21,18 @@ public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
 
   private HttpServletResponse servletResponse;
 
+  private Optional<Consumer<WebResponse>> maybeFilterForResponse;
+
   public Controller(final HttpServletRequest servletRequest,
       final HttpServletResponse servletResponse,
-      final Map<String, String> captured) {
+      final Map<String, String> captured,
+      final Optional<Consumer<WebResponse>> maybeResponseFilter) {
     this.servletRequest = servletRequest;
     this.servletResponse = servletResponse;
     this.setDefaultCharacterEncoding();
 
     this.pathParams = Collections.unmodifiableMap(captured);
+    this.maybeFilterForResponse = maybeResponseFilter;
   }
 
   private void setDefaultCharacterEncoding() {
@@ -36,11 +42,16 @@ public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
   public void invoke(final ThrowableFunction<Controller, WebResponse> action) {
     try {
       final WebResponse res = action.throwableApply(this);
+      maybeFilterForResponse.map(responseFilter -> {
+        responseFilter.accept(res);
+        return null;
+      });
       res.write(servletResponse);
     } catch (Throwable e) {
-      final WebResponse response = this.handleException(e);
+      final WebResponse res = this.handleException(e);
+
       try {
-        response.write(servletResponse);
+        res.write(servletResponse);
       } catch (final IOException ioe) {
         // this.logException(e);
         throw new RuntimeException(ioe);

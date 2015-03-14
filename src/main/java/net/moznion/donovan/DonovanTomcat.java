@@ -54,7 +54,7 @@ public class DonovanTomcat extends DonovanServletContainer {
 
     @Override
     protected void service(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-      dispatcher.dispatch(servletRequest, servletResponse);
+      dispatcher.dispatch(servletRequest, servletResponse, maybeResponseFilter);
     }
   }
 }

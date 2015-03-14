@@ -2,15 +2,20 @@ package net.moznion.donovan;
 
 import lombok.Getter;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import me.geso.webscrew.response.WebResponse;
 
 abstract class DonovanServletContainer implements AutoCloseable {
   @Getter
   protected String url;
+  protected Optional<Consumer<WebResponse>> maybeResponseFilter;
   protected final Dispatcher dispatcher;
 
   public DonovanServletContainer() {
     dispatcher = new Dispatcher();
+    maybeResponseFilter = Optional.empty();
   }
 
   abstract public void start() throws Exception;
@@ -23,6 +28,10 @@ abstract class DonovanServletContainer implements AutoCloseable {
 
   public void post(String path, ThrowableFunction<Controller, WebResponse> action) {
     dispatcher.getRouter().post(path, action);
+  }
+
+  public void registerResponseFilter(Consumer<WebResponse> responseFilter) {
+    maybeResponseFilter = Optional.ofNullable(responseFilter);
   }
 
   @Override
