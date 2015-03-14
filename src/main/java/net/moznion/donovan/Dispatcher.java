@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Getter
-public class Dispatcher {
+public class Dispatcher implements ErrorPageWriter {
   private final WebRouter<ThrowableFunction<Controller, WebResponse>> router;
 
   public Dispatcher() {
@@ -40,31 +40,5 @@ public class Dispatcher {
     final ThrowableFunction<Controller, WebResponse> action = match.getDestination();
     Controller controller = new Controller(servletRequest, servletResponse, captured);
     controller.invoke(action);
-  }
-
-  private void writeMethodNotAllowedErrorPage(final HttpServletResponse servletResponse) {
-    servletResponse.setCharacterEncoding("UTF-8");
-    servletResponse.setStatus(405);
-    servletResponse.setContentType("text/html; charset=utf-8");
-    try {
-      servletResponse
-          .getWriter()
-          .write(
-              "<!doctype html><html><div style='font-size: 400%'>405 Method Not Allowed</div></html>");
-    } catch (final Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  private void writeNotFoundErrorPage(final HttpServletResponse servletResponse) {
-    servletResponse.setCharacterEncoding("UTF-8");
-    servletResponse.setStatus(404);
-    servletResponse.setContentType("text/html; charset=utf-8");
-    try {
-      servletResponse.getWriter()
-          .write("<!doctype html><html><div style='font-size: 400%'>404 Not Found</div></html>");
-    } catch (final Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }
