@@ -13,7 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DonovanJetty extends DonovanServlet {
+public class DonovanJetty extends DonovanServletContainer {
   @Getter
   private Server jetty;
 
