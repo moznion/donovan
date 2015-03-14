@@ -23,7 +23,8 @@ public class Dispatcher implements ErrorPageWriter {
 
   public void dispatch(final HttpServletRequest servletRequest,
       final HttpServletResponse servletResponse,
-      final Optional<Consumer<WebResponse>> maybeResponseFilter) {
+      final Optional<Consumer<WebResponse>> maybeResponseFilter,
+      final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger) {
     final String method = servletRequest.getMethod();
     final String path = servletRequest.getPathInfo();
 
@@ -41,7 +42,9 @@ public class Dispatcher implements ErrorPageWriter {
 
     final Map<String, String> captured = match.getCaptured();
     final ThrowableFunction<Controller, WebResponse> action = match.getDestination();
-    Controller controller = new Controller(servletRequest, servletResponse, captured, maybeResponseFilter);
+    Controller controller =
+        new Controller(servletRequest, servletResponse, captured, maybeResponseFilter,
+            maybeBeforeDispatchTrigger);
     controller.invoke(action);
   }
 }

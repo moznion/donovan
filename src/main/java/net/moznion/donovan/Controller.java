@@ -18,21 +18,25 @@ public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
   private HttpServletRequest servletRequest;
   @Getter
   private Map<String, String> pathParams;
-
+  @Getter
   private HttpServletResponse servletResponse;
 
-  private Optional<Consumer<WebResponse>> maybeFilterForResponse;
+  private Optional<Consumer<WebResponse>> maybeResponseFilter;
+  private Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger;
 
-  public Controller(final HttpServletRequest servletRequest,
+  public Controller(
+      final HttpServletRequest servletRequest,
       final HttpServletResponse servletResponse,
       final Map<String, String> captured,
-      final Optional<Consumer<WebResponse>> maybeResponseFilter) {
+      final Optional<Consumer<WebResponse>> maybeResponseFilter,
+      final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger) {
     this.servletRequest = servletRequest;
     this.servletResponse = servletResponse;
     this.setDefaultCharacterEncoding();
 
     this.pathParams = Collections.unmodifiableMap(captured);
-    this.maybeFilterForResponse = maybeResponseFilter;
+    this.maybeResponseFilter = maybeResponseFilter;
+    this.maybeBeforeDispatchTrigger = maybeBeforeDispatchTrigger;
   }
 
   private void setDefaultCharacterEncoding() {
@@ -41,8 +45,8 @@ public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
 
   public void invoke(final ThrowableFunction<Controller, WebResponse> action) {
     try {
-      final WebResponse res = action.throwableApply(this);
-      maybeFilterForResponse.map(responseFilter -> {
+      final WebResponse res = respond(action);
+      maybeResponseFilter.map(responseFilter -> {
         responseFilter.accept(res);
         return null;
       });
@@ -57,6 +61,21 @@ public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
         throw new RuntimeException(ioe);
       }
     }
+  }
+
+  private WebResponse respond(final ThrowableFunction<Controller, WebResponse> action)
+      throws Throwable {
+    if (maybeBeforeDispatchTrigger.isPresent()) {
+      Optional<WebResponse> maybeResponse = maybeBeforeDispatchTrigger.get().throwableApply(this);
+      if (maybeResponse == null) {
+        throw new RuntimeException("Response of before dispatch trigger must not be null.");
+      }
+      if (maybeResponse.isPresent()) {
+        return maybeResponse.get();
+      }
+    }
+
+    return action.throwableApply(this);
   }
 
   public WebResponse handleException(Throwable e) {
