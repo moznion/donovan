@@ -6,6 +6,7 @@ import me.geso.routes.RoutingResult;
 import me.geso.routes.WebRouter;
 import me.geso.webscrew.response.WebResponse;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Getter
-public class Dispatcher implements ErrorPageWriter {
+public class Dispatcher implements JSONErrorRenderer, JacksonJSONRenderer {
   private final WebRouter<ThrowableFunction<Controller, WebResponse>> router;
 
   public Dispatcher() {
@@ -32,12 +33,20 @@ public class Dispatcher implements ErrorPageWriter {
     final RoutingResult<ThrowableFunction<Controller, WebResponse>> match =
         router.match(method, path);
     if (match == null) {
-      this.writeNotFoundErrorPage(servletResponse);
+      try {
+        this.render404().write(servletResponse);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
       return;
     }
 
     if (!match.methodAllowed()) {
-      this.writeMethodNotAllowedErrorPage(servletResponse);
+      try {
+        this.render405().write(servletResponse);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
       return;
     }
 

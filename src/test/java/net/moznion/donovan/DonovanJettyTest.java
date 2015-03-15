@@ -67,9 +67,7 @@ public class DonovanJettyTest {
       Mech2Result result = mech.get("/foo").execute();
 
       assertEquals(404, result.getResponse().getStatusLine().getStatusCode());
-      assertEquals(
-          "<!doctype html><html><div style='font-size: 400%'>404 Not Found</div></html>",
-          result.getResponseBodyAsString());
+      assertEquals("{\"code\":404,\"messages\":[\"Not Found\"]}", result.getResponseBodyAsString());
     }
   }
 
@@ -86,8 +84,7 @@ public class DonovanJettyTest {
           URI(url));
       Mech2Result result = mech.post("/").execute();
       assertEquals(405, result.getResponse().getStatusLine().getStatusCode());
-      assertEquals(
-          "<!doctype html><html><div style='font-size: 400%'>405 Method Not Allowed</div></html>",
+      assertEquals("{\"code\":405,\"messages\":[\"Method Not Allowed\"]}",
           result.getResponseBodyAsString());
     }
   }

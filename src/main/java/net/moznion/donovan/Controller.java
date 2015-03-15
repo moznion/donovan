@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Controller implements JSONErrorPageRenderer, JacksonJSONRenderer {
+public class Controller implements JSONErrorRenderer, JacksonJSONRenderer {
   @Getter
   private final HttpServletRequest servletRequest;
   @Getter
