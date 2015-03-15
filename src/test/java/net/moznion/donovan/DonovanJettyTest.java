@@ -110,4 +110,22 @@ public class DonovanJettyTest {
           result.getResponseBodyAsString());
     }
   }
+
+  @Test
+  public void shouldRenderText() throws Exception {
+    try (DonovanJetty dj = new DonovanJetty()) {
+      dj.get("/", c -> {
+        return c.renderText("Text!");
+      });
+
+      dj.start();
+
+      String url = dj.getUrl();
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+      Mech2Result result = mech.get("/").execute();
+
+      assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals("Text!", result.getResponseBodyAsString());
+    }
+  }
 }
