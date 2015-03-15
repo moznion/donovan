@@ -88,4 +88,26 @@ public class DonovanTomcatTest {
           result.getResponseBodyAsString());
     }
   }
+
+  @Test
+  public void shouldRedirectSuccessfully() throws Exception {
+    try (DonovanTomcat dt = new DonovanTomcat()) {
+      dt.get("/", c -> {
+        return c.redirect("/redirect");
+      });
+      dt.get("/redirect", c -> {
+        return c.renderJSON(new BasicAPIResponse(200, "Redirected"));
+      });
+
+      dt.start();
+
+      String url = dt.getUrl();
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+      Mech2Result result = mech.get("/").execute();
+
+      assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals("{\"code\":200,\"messages\":[\"Redirected\"]}",
+          result.getResponseBodyAsString());
+    }
+  }
 }

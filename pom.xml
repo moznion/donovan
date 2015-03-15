@@ -4,7 +4,7 @@
 
 	<groupId>net.moznion</groupId>
 	<artifactId>donovan</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>donovan</name>
@@ -80,6 +80,11 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
 			<version>8.0.20</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4</version>
 		</dependency>
 	</dependencies>
 

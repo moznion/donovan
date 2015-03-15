@@ -80,11 +80,33 @@ public class DonovanJettyTest {
       dj.start();
 
       String url = dj.getUrl();
-      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new
-          URI(url));
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.post("/").execute();
+
       assertEquals(405, result.getResponse().getStatusLine().getStatusCode());
       assertEquals("{\"code\":405,\"messages\":[\"Method Not Allowed\"]}",
+          result.getResponseBodyAsString());
+    }
+  }
+
+  @Test
+  public void shouldRedirectSuccessfully() throws Exception {
+    try (DonovanJetty dj = new DonovanJetty()) {
+      dj.get("/", c -> {
+        return c.redirect("/redirect");
+      });
+      dj.get("/redirect", c -> {
+        return c.renderJSON(new BasicAPIResponse(200, "Redirected"));
+      });
+
+      dj.start();
+
+      String url = dj.getUrl();
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+      Mech2Result result = mech.get("/").execute();
+
+      assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals("{\"code\":200,\"messages\":[\"Redirected\"]}",
           result.getResponseBodyAsString());
     }
   }
