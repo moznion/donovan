@@ -1,7 +1,6 @@
 package net.moznion.donovan;
 
 import lombok.Getter;
-
 import me.geso.routes.RoutingResult;
 import me.geso.routes.WebRouter;
 import me.geso.webscrew.response.WebResponse;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Getter
-public class Dispatcher implements JSONErrorRenderer, JacksonJSONRenderer {
+class Dispatcher implements JSONErrorRenderer, JacksonJSONRenderer {
   private final WebRouter<ThrowableFunction<Controller, WebResponse>> router;
 
   public Dispatcher() {

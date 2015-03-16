@@ -18,7 +18,7 @@ public class DonovanTomcatTest {
       });
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
       assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
@@ -33,7 +33,7 @@ public class DonovanTomcatTest {
       });
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.post("/").execute();
       assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
@@ -49,7 +49,7 @@ public class DonovanTomcatTest {
       });
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/bar").execute();
       assertEquals(200, result.getResponse().getStatusLine().getStatusCode());
@@ -62,7 +62,7 @@ public class DonovanTomcatTest {
     try (DonovanTomcat dt = new DonovanTomcat()) {
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/foo").execute();
 
@@ -79,7 +79,7 @@ public class DonovanTomcatTest {
       });
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new
           URI(url));
       Mech2Result result = mech.post("/").execute();
@@ -101,7 +101,7 @@ public class DonovanTomcatTest {
 
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
 
@@ -120,7 +120,7 @@ public class DonovanTomcatTest {
 
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
 
@@ -138,7 +138,7 @@ public class DonovanTomcatTest {
 
       dt.start();
 
-      String url = dt.getUrl();
+      String url = dt.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
 

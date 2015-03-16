@@ -13,6 +13,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Donovan servlet which is based on Jetty.
+ * 
+ * @author moznion
+ *
+ */
 public class DonovanJetty extends DonovanServletContainer {
   @Getter
   private Server jetty;
@@ -39,6 +45,11 @@ public class DonovanJetty extends DonovanServletContainer {
     jetty.stop();
   }
 
+  /**
+   * Make server persistent.
+   * 
+   * @throws InterruptedException Occur when failed to make server persistent
+   */
   public void join() throws InterruptedException {
     jetty.join();
   }
@@ -52,7 +63,8 @@ public class DonovanJetty extends DonovanServletContainer {
     public void handle(String target, Request baseRequest, HttpServletRequest servletRequest,
         HttpServletResponse servletResponse) throws IOException, ServletException {
       baseRequest.setHandled(true);
-      dispatcher.dispatch(servletRequest, servletResponse, maybeResponseFilter, maybeBeforeDispatchTrigger);
+      dispatcher.dispatch(servletRequest, servletResponse, maybeResponseFilter,
+          maybeBeforeDispatchTrigger);
     }
   }
 }

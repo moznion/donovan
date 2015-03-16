@@ -3,7 +3,6 @@ package net.moznion.donovan;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
 import me.geso.webscrew.response.WebResponse;
 
 import java.io.IOException;
@@ -15,20 +14,23 @@ import java.util.function.Consumer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Controller for donovan.
+ * 
+ * @author moznion
+ *
+ */
 public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONRenderer, Redirector {
-  @Getter
   private final HttpServletRequest servletRequest;
-  @Getter
-  private final Map<String, String> pathParams;
-  @Getter
   private final HttpServletResponse servletResponse;
+  private final Map<String, String> pathParams;
 
   private final Optional<Consumer<WebResponse>> maybeResponseFilter;
   private final Optional<ThrowableFunction<Controller, Optional<WebResponse>>> maybeBeforeDispatchTrigger;
 
   @Getter
   @Accessors(fluent = true)
-  public static class ControllerBuilder {
+  static class ControllerBuilder {
     private final HttpServletRequest servletRequest;
     private final HttpServletResponse servletResponse;
     @Setter
@@ -51,7 +53,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
     }
   }
 
-  public static ControllerBuilder makeControllerBuilder(HttpServletRequest servletRequest,
+  static ControllerBuilder makeControllerBuilder(HttpServletRequest servletRequest,
       HttpServletResponse servletResponse) {
     return new ControllerBuilder(servletRequest, servletResponse);
   }
@@ -70,7 +72,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
     servletResponse.setCharacterEncoding("UTF-8");
   }
 
-  public void invoke(final ThrowableFunction<Controller, WebResponse> action) {
+  void invoke(final ThrowableFunction<Controller, WebResponse> action) {
     try {
       final WebResponse res = respond(action);
       maybeResponseFilter.map(responseFilter -> {
@@ -105,8 +107,35 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
     return action.apply(this);
   }
 
-  public WebResponse handleException(Throwable e) {
+  private WebResponse handleException(Throwable e) {
     // this.logException(e);
     return this.renderError(500, "Internal Server Error");
+  }
+
+  /**
+   * Get servlet request.
+   * 
+   * @return Servlet request
+   */
+  public HttpServletRequest getServletRequest() {
+    return servletRequest;
+  }
+
+  /**
+   * Get servlet response.
+   * 
+   * @return Servlet response
+   */
+  public HttpServletResponse getServletResponse() {
+    return servletResponse;
+  }
+
+  /**
+   * Get path parameters.
+   * 
+   * @return Path parameters
+   */
+  public Map<String, String> getPathParams() {
+    return pathParams;
   }
 }

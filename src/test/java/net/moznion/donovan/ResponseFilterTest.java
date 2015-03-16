@@ -25,7 +25,7 @@ public class ResponseFilterTest {
 
       dj.start();
 
-      String url = dj.getUrl();
+      String url = dj.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
 
@@ -45,7 +45,7 @@ public class ResponseFilterTest {
 
       dj.start();
 
-      String url = dj.getUrl();
+      String url = dj.getURL();
       Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
       Mech2Result result = mech.get("/").execute();
 

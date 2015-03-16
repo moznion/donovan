@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Donoven servlet which is based on Tomcat.
+ * 
+ * @author moznion
+ */
 public class DonovanTomcat extends DonovanServletContainer {
   @Getter
   private Tomcat tomcat;
@@ -41,6 +46,9 @@ public class DonovanTomcat extends DonovanServletContainer {
     tomcat.destroy();
   }
 
+  /**
+   * Make server persistent.
+   */
   public void await() {
     tomcat.getServer().await();
   }
@@ -54,7 +62,8 @@ public class DonovanTomcat extends DonovanServletContainer {
 
     @Override
     protected void service(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-      dispatcher.dispatch(servletRequest, servletResponse, maybeResponseFilter, maybeBeforeDispatchTrigger);
+      dispatcher.dispatch(servletRequest, servletResponse, maybeResponseFilter,
+          maybeBeforeDispatchTrigger);
     }
   }
 }
