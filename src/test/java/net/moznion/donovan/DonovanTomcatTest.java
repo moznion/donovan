@@ -128,4 +128,23 @@ public class DonovanTomcatTest {
       assertEquals("Text!", result.getResponseBodyAsString());
     }
   }
+
+  @Test
+  public void shouldReceive500() throws Exception {
+    try (DonovanTomcat dt = new DonovanTomcat()) {
+      dt.get("/", c -> {
+        throw new RuntimeException();
+      });
+
+      dt.start();
+
+      String url = dt.getUrl();
+      Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+      Mech2Result result = mech.get("/").execute();
+
+      assertEquals(500, result.getResponse().getStatusLine().getStatusCode());
+      assertEquals("{\"code\":500,\"messages\":[\"Internal Server Error\"]}",
+          result.getResponseBodyAsString());
+    }
+  }
 }

@@ -93,7 +93,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
   private WebResponse respond(final ThrowableFunction<Controller, WebResponse> action)
       throws Throwable {
     if (maybeBeforeDispatchTrigger.isPresent()) {
-      Optional<WebResponse> maybeResponse = maybeBeforeDispatchTrigger.get().throwableApply(this);
+      Optional<WebResponse> maybeResponse = maybeBeforeDispatchTrigger.get().apply(this);
       if (maybeResponse == null) {
         throw new RuntimeException("Response of before dispatch trigger must not be null.");
       }
@@ -102,7 +102,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
       }
     }
 
-    return action.throwableApply(this);
+    return action.apply(this);
   }
 
   public WebResponse handleException(Throwable e) {
