@@ -29,7 +29,7 @@ public class DonovanTomcat extends DonovanServletContainer {
     tomcat = new Tomcat();
     tomcat.setPort(0);
 
-    Context ctx = tomcat.addContext("/", new File(".").getAbsolutePath());
+    Context ctx = tomcat.addContext("", new File(".").getAbsolutePath());
     Tomcat.addServlet(ctx, "donovanTomcatHandler", new DonovanTomcatHandler());
     ctx.addServletMapping("/*", "donovanTomcatHandler");
     ctx.setIgnoreAnnotations(true);
