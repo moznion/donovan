@@ -86,7 +86,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
       try {
         res.write(servletResponse);
       } catch (final IOException ioe) {
-        // this.logException(e);
+        Logger.logException(ioe);
         throw new RuntimeException(ioe);
       }
     }
@@ -108,7 +108,7 @@ public class Controller implements TextRenderer, JSONErrorRenderer, JacksonJSONR
   }
 
   private WebResponse handleException(Throwable e) {
-    // this.logException(e);
+    Logger.logException(e);
     return this.renderError(500, "Internal Server Error");
   }
 

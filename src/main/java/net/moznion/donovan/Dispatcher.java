@@ -35,6 +35,7 @@ class Dispatcher implements JSONErrorRenderer, JacksonJSONRenderer {
       try {
         this.render404().write(servletResponse);
       } catch (IOException e) {
+        Logger.logException(e);
         throw new RuntimeException(e);
       }
       return;
@@ -44,6 +45,7 @@ class Dispatcher implements JSONErrorRenderer, JacksonJSONRenderer {
       try {
         this.render405().write(servletResponse);
       } catch (IOException e) {
+        Logger.logException(e);
         throw new RuntimeException(e);
       }
       return;
