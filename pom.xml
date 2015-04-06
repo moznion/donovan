@@ -14,6 +14,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<tomcat.version>8.0.20</tomcat.version>
+		<jetty.version>9.2.9.v20150224</jetty.version>
 	</properties>
 
 	<dependencies>
@@ -53,8 +55,8 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>9.2.9.v20150224</version>
-			<scope>provided</scope>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>me.geso</groupId>
@@ -75,14 +77,14 @@
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-core</artifactId>
-			<version>8.0.20</version>
-			<scope>provided</scope>
+			<version>${tomcat.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-catalina</artifactId>
-			<version>8.0.20</version>
-			<scope>provided</scope>
+			<version>${tomcat.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
