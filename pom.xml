@@ -3,7 +3,7 @@
 
 	<groupId>net.moznion</groupId>
 	<artifactId>donovan</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>donovan</name>
@@ -226,7 +226,7 @@
 		<url>https://github.com/moznion/donovan</url>
 		<connection>scm:git:git@github.com:moznion/donovan.git</connection>
 		<developerConnection>scm:git:git@github.com:moznion/donovan.git</developerConnection>
-		<tag>donovan-1.0.0</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<licenses>
