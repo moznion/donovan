@@ -5,6 +5,7 @@ Description
 --
 
 Deadly simple Java 8 web application framework for mocking and testing.
+
 This framework aims to bootstrap a web application by single java file.
 Donovan uses embedded Jetty or Tomcat to realize this purpose.
 
@@ -47,7 +48,7 @@ public class App {
     <dependency>
         <groupId>net.moznion</groupId>
         <artifactId>donovan</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
     <dependency>
         <groupId>org.slf4j</groupId>
@@ -103,7 +104,7 @@ public class App {
     <dependency>
         <groupId>net.moznion</groupId>
         <artifactId>donovan</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
     <dependency>
         <groupId>org.slf4j</groupId>
@@ -153,7 +154,7 @@ License
 
 ```
 The MIT License (MIT)
-Copyright © 2014 moznion, http://moznion.net/ <moznion@gmail.com>
+Copyright © 2015 moznion, http://moznion.net/ <moznion@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
