@@ -1,55 +1,147 @@
 donovan [![Build Status](https://travis-ci.org/moznion/donovan.svg)](https://travis-ci.org/moznion/donovan)
 ==
 
-Deadly simple Java 8 web application framework for mocking and testing.
+Description
+--
 
-This is inspired by [avans](https://github.com/tokuhirom/avans).
+Deadly simple Java 8 web application framework for mocking and testing.
+This framework aims to bootstrap a web application by single java file.
+Donovan uses embedded Jetty or Tomcat to realize this purpose.
+
+This framework is inspired by [avans](https://github.com/tokuhirom/avans).
 
 Synopsis
 ---
 
 ### With Embedded Jetty
 
+#### App.java
+
 ```java
-try (DonovanJetty dj = new DonovanJetty()) {
-    dj.get("/", (c) -> {
-        return c.renderJSON(new BasicAPIResponse(200, "hello!"));
-    });
+public class App {
+  public static void main(String[] args) throws Exception {
+      try (DonovanJetty dj = new DonovanJetty()) {
+          dj.get("/", (c) -> {
+              return c.renderJSON(new BasicAPIResponse(200, "hello!"));
+          });
 
-    dj.start();
+          dj.start();
 
-    String url = dj.getUrl();
-    Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
-    Mech2Result result = mech.get("/").execute();
+          String url = dj.getURL();
+          Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+          Mech2Result result = mech.get("/").execute();
 
-    System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
-    System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+          System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
+          System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+      }
+  }
 }
 ```
+
+#### pom.xml
+
+```xml
+...
+<dependencies>
+    ...
+    <dependency>
+        <groupId>net.moznion</groupId>
+        <artifactId>donovan</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.12</version>
+    </dependency>
+    <dependency>
+        <groupId>me.geso</groupId>
+        <artifactId>mech2</artifactId>
+        <version>0.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>9.2.10.v20150310</version>
+    </dependency>
+</dependencies>
+```
+
+You must specify `jetty-server` if you want to use donovan with jetty.
 
 ### With Embedded Tomcat
 
+#### App.java
+
 ```java
-try (DonovanTomcat dt = new DonovanTomcat()) {
-    dt.get("/", (c) -> {
-        return c.renderJSON(new BasicAPIResponse());
-    });
+public class App {
+  public static void main(String[] args) throws Exception {
+      try (DonovanTomcat dt = new DonovanTomcat()) {
+          dt.get("/", (c) -> {
+              return c.renderJSON(new BasicAPIResponse());
+          });
 
-    dt.start();
+          dt.start();
 
-    String url = dt.getUrl();
-    Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
-    Mech2Result result = mech.get("/").execute();
+          String url = dt.getURL();
+          Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+          Mech2Result result = mech.get("/").execute();
 
-    System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
-    System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+          System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
+          System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+      }
+  }
 }
 ```
 
-Description
+#### pom.xml
+
+```xml
+...
+<dependencies>
+    ...
+    <dependency>
+        <groupId>net.moznion</groupId>
+        <artifactId>donovan</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.12</version>
+    </dependency>
+    <dependency>
+        <groupId>me.geso</groupId>
+        <artifactId>mech2</artifactId>
+        <version>0.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>8.0.21</version>
+    </dependency>
+        <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-catalina</artifactId>
+        <version>8.0.21</version>
+    </dependency>
+</dependencies>
+```
+
+You must specify `tomcat-embed-core` and `tomcat-catalina` if you want to use donovan with tomcat.
+
+### Run a web app
+
+```
+$ mvn compile
+$ mvn exec:java -Dexec.mainClass="com.example.App"
+```
+
+FAQ
 --
 
-TBD
+Q. Can I use this framework in production?  
+A. You'd better not do it.
 
 Author
 --
