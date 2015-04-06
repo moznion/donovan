@@ -4,12 +4,12 @@
 
 	<groupId>net.moznion</groupId>
 	<artifactId>donovan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>donovan</name>
-	<description></description>
-	<url></url>
+	<description>Deadly simple Java 8 web application framework for mocking and testing</description>
+	<url>https://github.com/moznion/donovan</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -224,9 +224,9 @@
 	</distributionManagement>
 
 	<scm>
-		<url></url>
-		<connection>scm:git:</connection>
-		<developerConnection>scm:git:</developerConnection>
+		<url>https://github.com/moznion/donovan</url>
+		<connection>scm:git:git@github.com:moznion/donovan.git</connection>
+		<developerConnection>scm:git:git@github.com:moznion/donovan.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
