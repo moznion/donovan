@@ -19,23 +19,26 @@ Synopsis
 #### App.java
 
 ```java
+@Slf4j
 public class App {
-  public static void main(String[] args) throws Exception {
-      try (DonovanJetty dj = new DonovanJetty()) {
-          dj.get("/", (c) -> {
-              return c.renderJSON(new BasicAPIResponse(200, "hello!"));
-          });
+    public static void main(String[] args) throws Exception {
+        try (DonovanJetty dj = new DonovanJetty()) {
+            dj.get("/", (c) -> {
+                return c.renderJSON(new BasicAPIResponse(200, "hello!"));
+            });
 
-          dj.start();
+            dj.start();
 
-          String url = dj.getURL();
-          Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
-          Mech2Result result = mech.get("/").execute();
+            String url = dj.getURL();
+            log.info(url);
 
-          System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
-          System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
-      }
-  }
+            Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+            Mech2Result result = mech.get("/").execute();
+
+            log.debug("{}", result.getResponse().getStatusLine().getStatusCode()); // <= 200
+            log.debug("{}", result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+        }
+    }
 }
 ```
 
@@ -75,23 +78,26 @@ You must specify `jetty-server` if you want to use donovan with jetty.
 #### App.java
 
 ```java
+@Slf4j
 public class App {
-  public static void main(String[] args) throws Exception {
-      try (DonovanTomcat dt = new DonovanTomcat()) {
-          dt.get("/", (c) -> {
-              return c.renderJSON(new BasicAPIResponse());
-          });
+    public static void main(String[] args) throws Exception {
+        try (DonovanTomcat dt = new DonovanTomcat()) {
+            dt.get("/", (c) -> {
+                return c.renderJSON(new BasicAPIResponse());
+            });
 
-          dt.start();
+            dt.start();
 
-          String url = dt.getURL();
-          Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
-          Mech2Result result = mech.get("/").execute();
+            String url = dt.getURL();
+            log.info(url);
 
-          System.out.println(result.getResponse().getStatusLine().getStatusCode()); // <= 200
-          System.out.println(result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
-      }
-  }
+            Mech2WithBase mech = new Mech2WithBase(Mech2.builder().build(), new URI(url));
+            Mech2Result result = mech.get("/").execute();
+
+            log.debug("{}", result.getResponse().getStatusLine().getStatusCode()); // <= 200
+            log.debug("{}", result.getResponseBodyAsString()); // <= {"code":200,"messages":["hello!"]}
+        }
+    }
 }
 ```
 
