@@ -1,4 +1,4 @@
-donovan [![Build Status](https://travis-ci.org/moznion/donovan.svg)](https://travis-ci.org/moznion/donovan)
+donovan [![Build Status](https://travis-ci.org/moznion/donovan.svg)](https://travis-ci.org/moznion/donovan) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.moznion/donovan/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.moznion/donovan) [![javadoc.io](https://javadocio-badges.herokuapp.com/net.moznion/donovan/badge.svg)](https://javadocio-badges.herokuapp.com/net.moznion/donovan)
 ==
 
 Description
